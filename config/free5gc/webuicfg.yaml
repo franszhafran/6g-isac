@@ -12,7 +12,7 @@ configuration:
     ipv4Address: 0.0.0.0
     port: 5000
   billingServer:
-    enable: false
+    enable: true
     hostIPv4: 127.0.0.1
     listenPort: 2121
     portRange:

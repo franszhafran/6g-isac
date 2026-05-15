@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
     git make curl ca-certificates \
     && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs \
+    && npm install -g yarn \
     && apt-get clean
 
 WORKDIR /free5gc

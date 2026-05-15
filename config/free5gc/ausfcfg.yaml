@@ -1,5 +1,5 @@
 info:
-  version: 1.0.2
+  version: 1.0.3
   description: AUSF initial local configuration
 
 configuration:
@@ -14,6 +14,8 @@ configuration:
   plmnSupportList:
     - mcc: "001"
       mnc: "01"
+  groupId: ausfGroup001
+  eapAkaSupiImsiPrefix: false
 
 logger:
   enable: true

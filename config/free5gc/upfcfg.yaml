@@ -1,23 +1,22 @@
-info:
-  version: 1.0.3
-  description: UPF initial local configuration
+version: 1.0.3
+description: UPF initial local configuration
 
-configuration:
-  pfcpVersion: 1
-  pfcp:
-    addr: 172.22.0.8
-    nodeID: 172.22.0.8
-    retransTimeout: 1s
-    maxRetrans: 3
-  gtpu:
-    forwarder: gtp5g
-    ifList:
-      - addr: 172.22.0.8
-        type: N3
-  dnnList:
-    - dnn: internet
-      cidr: 10.60.0.0/16
-      natifname: eth0
+pfcp:
+  addr: 172.22.0.8
+  nodeID: 172.22.0.8
+  retransTimeout: 1s
+  maxRetrans: 3
+
+gtpu:
+  forwarder: gtp5g
+  ifList:
+    - addr: 172.22.0.8
+      type: N3
+
+dnnList:
+  - dnn: internet
+    cidr: 10.60.0.0/16
+    natifname: eth0
 
 logger:
   enable: true

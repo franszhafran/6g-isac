@@ -8,7 +8,8 @@ mkdir -p /var/log/free5gc
 
 case "$COMPONENT" in
   webconsole)
-    exec /free5gc/bin/webconsole -c ${CFG_DIR}/webuicfg.yaml
+    cd /free5gc/webconsole
+    exec ./bin/webconsole -c ${CFG_DIR}/webuicfg.yaml
     ;;
   upf)
     sysctl -w net.ipv4.ip_forward=1 >/dev/null 2>&1 || true

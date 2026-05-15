@@ -9,17 +9,21 @@ configuration:
     registerIPv4: 172.22.0.27
     bindingIPv4: 0.0.0.0
     port: 8000
-  serviceNameList:
-    - npcf-am-policy-control
-    - npcf-smpolicycontrol
-    - npcf-bdtpolicycontrol
-    - npcf-policyauthorization
-    - npcf-eventexposure
-    - npcf-ue-policy-control
-  nrfUri: http://172.22.0.12:8000
+  timeFormat: 2019-01-02 15:04:05
   defaultBdtRefId: BdtPolicyId-
-  mongoDBName: free5gc
-  mongoDBUrl: mongodb://172.22.0.2:27017
+  nrfUri: http://172.22.0.12:8000
+  serviceList:
+    - serviceName: npcf-am-policy-control
+    - serviceName: npcf-smpolicycontrol
+      suppFeat: 3fff
+    - serviceName: npcf-bdtpolicycontrol
+    - serviceName: npcf-policyauthorization
+      suppFeat: 3
+    - serviceName: npcf-eventexposure
+    - serviceName: npcf-ue-policy-control
+  mongodb:
+    name: free5gc
+    url: mongodb://172.22.0.2:27017
   locality: area1
 
 logger:

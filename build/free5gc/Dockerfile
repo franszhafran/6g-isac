@@ -33,8 +33,10 @@ RUN apt-get update && apt-get install -y \
     iproute2 iptables ca-certificates \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-COPY --from=builder /free5gc/bin    /free5gc/bin
-COPY --from=builder /free5gc/config /free5gc/config
+COPY --from=builder /free5gc/bin                   /free5gc/bin
+COPY --from=builder /free5gc/config               /free5gc/config
+COPY --from=builder /free5gc/webconsole/bin       /free5gc/webconsole/bin
+COPY --from=builder /free5gc/webconsole/public    /free5gc/webconsole/public
 
 COPY scripts/entrypoint-free5gc.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

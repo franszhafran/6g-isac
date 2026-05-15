@@ -8,9 +8,12 @@ ENV GOFLAGS="-mod=mod"
 ARG FREE5GC_VERSION=v3.4.3
 
 RUN apt-get update && apt-get install -y \
-    git make curl ca-certificates \
+    git make curl ca-certificates gnupg \
     && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs \
+    && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
+    && echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list \
+    && apt-get update && apt-get install -y --no-install-recommends yarn \
     && apt-get clean
 
 WORKDIR /free5gc
@@ -20,8 +23,8 @@ RUN git clone --recurse-submodules --depth 1 --branch ${FREE5GC_VERSION} \
 # Build all core NFs (no webconsole — avoids yarn requirement)
 RUN make amf ausf chf nrf nssf pcf smf udm udr upf
 
-# Install yarn then build webconsole (React frontend + Go backend)
-RUN npm install -g yarn@1.22.21 && make webconsole
+# Build webconsole (yarn now at /usr/bin/yarn via apt)
+RUN make webconsole
 
 # Stage 2: Minimal runtime
 FROM ubuntu:22.04

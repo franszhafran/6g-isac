@@ -22,8 +22,8 @@ RUN ./build_oai -I --nrUE -w SIMU --noavx512 --ninja 2>&1 | tee /tmp/build-ue.lo
 
 WORKDIR /opt/oai-ue
 
-CMD ["/oai-ran/cmake_targets/ran_build/build/nr-uesoftmodem", \
-     "--sa", "--rfsim", \
+ENTRYPOINT ["/oai-ran/cmake_targets/ran_build/build/nr-uesoftmodem"]
+CMD ["--sa", "--rfsim", \
      "-r", "106", "--numerology", "1", "--band", "78", \
      "-C", "3619200000", \
      "--rfsimulator.serveraddr", "172.22.0.23"]

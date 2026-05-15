@@ -1,0 +1,20 @@
+info:
+  version: 1.0.2
+  description: UDR initial local configuration
+
+configuration:
+  sbi:
+    scheme: http
+    registerIPv4: 172.22.0.14
+    bindingIPv4: 0.0.0.0
+    port: 8000
+  serviceNameList:
+    - nudr-dr
+  nrfUri: http://172.22.0.12:8000
+  mongoDBName: free5gc
+  mongoDBUrl: mongodb://172.22.0.2:27017
+
+logger:
+  enable: true
+  level: info
+  reportCaller: false

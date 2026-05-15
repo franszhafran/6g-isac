@@ -1,0 +1,21 @@
+info:
+  version: 1.0.1
+  description: NRF initial local configuration
+
+configuration:
+  MongoDBName: free5gc
+  MongoDBUrl: mongodb://172.22.0.2:27017
+  sbi:
+    scheme: http
+    registerIPv4: 172.22.0.12
+    bindingIPv4: 0.0.0.0
+    port: 8000
+  serviceNameList:
+    - nnrf-nfm
+    - nnrf-disc
+  oauth: false
+
+logger:
+  enable: true
+  level: info
+  reportCaller: false

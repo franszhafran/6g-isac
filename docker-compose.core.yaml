@@ -1,19 +1,19 @@
 version: "3.8"
 
-x-open5gs: &open5gs-base
+x-free5gc: &free5gc-base
   build:
     context: .
-    dockerfile: Dockerfile.open5gs
+    dockerfile: build/free5gc/Dockerfile
   restart: unless-stopped
   networks:
     - isac_net
 
 services:
 
-  mongo:
+  mongodb:
     image: mongo:6.0
-    container_name: mongo
-    hostname: mongo
+    container_name: mongodb
+    hostname: mongodb
     volumes:
       - mongodbdata:/data/db
     networks:
@@ -21,191 +21,154 @@ services:
         ipv4_address: 172.22.0.2
     restart: unless-stopped
 
-  webui:
-    <<: *open5gs-base
-    container_name: webui
-    hostname: webui
-    environment:
-      - COMPONENT_NAME=webui
-      - DB_URI=mongodb://172.22.0.2/open5gs
-    ports:
-      - "${WEBUI_PORT:-9999}:9999"
-    networks:
-      isac_net:
-        ipv4_address: 172.22.0.26
-    depends_on:
-      - mongo
-
   nrf:
-    <<: *open5gs-base
+    <<: *free5gc-base
     container_name: nrf
     hostname: nrf
     environment:
       - COMPONENT_NAME=nrf
     volumes:
-      - ./config/open5gs/nrf.yaml:/etc/open5gs/nrf.yaml:ro
-      - ./log:/var/log/open5gs
+      - ./config/free5gc/nrfcfg.yaml:/free5gc/config/nrfcfg.yaml:ro
     networks:
       isac_net:
         ipv4_address: 172.22.0.12
-
-  scp:
-    <<: *open5gs-base
-    container_name: scp
-    hostname: scp
-    environment:
-      - COMPONENT_NAME=scp
-    volumes:
-      - ./config/open5gs/scp.yaml:/etc/open5gs/scp.yaml:ro
-      - ./log:/var/log/open5gs
-    networks:
-      isac_net:
-        ipv4_address: 172.22.0.35
     depends_on:
-      - nrf
+      - mongodb
 
   ausf:
-    <<: *open5gs-base
+    <<: *free5gc-base
     container_name: ausf
     hostname: ausf
     environment:
       - COMPONENT_NAME=ausf
     volumes:
-      - ./config/open5gs/ausf.yaml:/etc/open5gs/ausf.yaml:ro
-      - ./log:/var/log/open5gs
+      - ./config/free5gc/ausfcfg.yaml:/free5gc/config/ausfcfg.yaml:ro
     networks:
       isac_net:
         ipv4_address: 172.22.0.11
     depends_on:
-      - scp
+      - nrf
 
   udr:
-    <<: *open5gs-base
+    <<: *free5gc-base
     container_name: udr
     hostname: udr
     environment:
       - COMPONENT_NAME=udr
     volumes:
-      - ./config/open5gs/udr.yaml:/etc/open5gs/udr.yaml:ro
-      - ./log:/var/log/open5gs
+      - ./config/free5gc/udrcfg.yaml:/free5gc/config/udrcfg.yaml:ro
     networks:
       isac_net:
         ipv4_address: 172.22.0.14
     depends_on:
-      - mongo
-      - scp
+      - mongodb
+      - nrf
 
   udm:
-    <<: *open5gs-base
+    <<: *free5gc-base
     container_name: udm
     hostname: udm
     environment:
       - COMPONENT_NAME=udm
     volumes:
-      - ./config/open5gs/udm.yaml:/etc/open5gs/udm.yaml:ro
-      - ./log:/var/log/open5gs
+      - ./config/free5gc/udmcfg.yaml:/free5gc/config/udmcfg.yaml:ro
     networks:
       isac_net:
         ipv4_address: 172.22.0.13
     depends_on:
-      - scp
+      - nrf
 
   pcf:
-    <<: *open5gs-base
+    <<: *free5gc-base
     container_name: pcf
     hostname: pcf
     environment:
       - COMPONENT_NAME=pcf
     volumes:
-      - ./config/open5gs/pcf.yaml:/etc/open5gs/pcf.yaml:ro
-      - ./log:/var/log/open5gs
+      - ./config/free5gc/pcfcfg.yaml:/free5gc/config/pcfcfg.yaml:ro
     networks:
       isac_net:
         ipv4_address: 172.22.0.27
     depends_on:
-      - mongo
-      - scp
-
-  bsf:
-    <<: *open5gs-base
-    container_name: bsf
-    hostname: bsf
-    environment:
-      - COMPONENT_NAME=bsf
-    volumes:
-      - ./config/open5gs/bsf.yaml:/etc/open5gs/bsf.yaml:ro
-      - ./log:/var/log/open5gs
-    networks:
-      isac_net:
-        ipv4_address: 172.22.0.29
-    depends_on:
-      - mongo
-      - scp
+      - mongodb
+      - nrf
 
   nssf:
-    <<: *open5gs-base
+    <<: *free5gc-base
     container_name: nssf
     hostname: nssf
     environment:
       - COMPONENT_NAME=nssf
     volumes:
-      - ./config/open5gs/nssf.yaml:/etc/open5gs/nssf.yaml:ro
-      - ./log:/var/log/open5gs
+      - ./config/free5gc/nssfcfg.yaml:/free5gc/config/nssfcfg.yaml:ro
     networks:
       isac_net:
         ipv4_address: 172.22.0.28
     depends_on:
-      - scp
+      - nrf
 
   amf:
-    <<: *open5gs-base
+    <<: *free5gc-base
     container_name: amf
     hostname: amf
     environment:
       - COMPONENT_NAME=amf
     volumes:
-      - ./config/open5gs/amf.yaml:/etc/open5gs/amf.yaml:ro
-      - ./log:/var/log/open5gs
+      - ./config/free5gc/amfcfg.yaml:/free5gc/config/amfcfg.yaml:ro
     networks:
       isac_net:
         ipv4_address: 172.22.0.10
     depends_on:
-      - scp
+      - nrf
 
   smf:
-    <<: *open5gs-base
+    <<: *free5gc-base
     container_name: smf
     hostname: smf
     environment:
       - COMPONENT_NAME=smf
     volumes:
-      - ./config/open5gs/smf.yaml:/etc/open5gs/smf.yaml:ro
-      - ./log:/var/log/open5gs
+      - ./config/free5gc/smfcfg.yaml:/free5gc/config/smfcfg.yaml:ro
     networks:
       isac_net:
         ipv4_address: 172.22.0.7
     depends_on:
-      - scp
+      - nrf
 
   upf:
-    <<: *open5gs-base
+    <<: *free5gc-base
     container_name: upf
     hostname: upf
     environment:
       - COMPONENT_NAME=upf
     volumes:
-      - ./config/open5gs/upf.yaml:/etc/open5gs/upf.yaml:ro
-      - ./log:/var/log/open5gs
+      - ./config/free5gc/upfcfg.yaml:/free5gc/config/upfcfg.yaml:ro
     cap_add:
       - NET_ADMIN
-      - SYS_MODULE
-    devices:
-      - /dev/net/tun
+      - SYS_ADMIN
+    privileged: true
     networks:
       isac_net:
         ipv4_address: 172.22.0.8
     depends_on:
       - smf
+
+  webconsole:
+    <<: *free5gc-base
+    container_name: webconsole
+    hostname: webconsole
+    environment:
+      - COMPONENT_NAME=webconsole
+    volumes:
+      - ./config/free5gc/webuicfg.yaml:/free5gc/config/webuicfg.yaml:ro
+    ports:
+      - "${WEBCONSOLE_PORT:-5000}:5000"
+    networks:
+      isac_net:
+        ipv4_address: 172.22.0.26
+    depends_on:
+      - mongodb
+      - nrf
 
 volumes:
   mongodbdata:

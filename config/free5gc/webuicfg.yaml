@@ -1,0 +1,17 @@
+info:
+  version: 1.0.1
+  description: WebConsole initial local configuration
+
+configuration:
+  mongoDBName: free5gc
+  mongoDBUrl: mongodb://172.22.0.2:27017
+  sbi:
+    scheme: http
+    bindingIPv4: 0.0.0.0
+    port: 5000
+  nrfUri: http://172.22.0.12:8000
+
+logger:
+  enable: true
+  level: info
+  reportCaller: false

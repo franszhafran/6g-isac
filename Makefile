@@ -3,18 +3,37 @@ COMPOSE_CORE := docker compose -p $(PROJECT) -f docker-compose.core.yaml
 COMPOSE_RAN  := docker compose -p $(PROJECT) -f docker-compose.ran.yaml
 COMPOSE_UE   := docker compose -p $(PROJECT) -f docker-compose.ue.yaml
 
-.PHONY: build core-up core-down ran-up ran-down ue-up ue-down \
-        up down restart status add-subscriber \
+.PHONY: build build-core build-ran build-ue \
+        gtp5g \
+        core-up core-down \
+        ran-up ran-down \
+        ue-up ue-down \
+        up down restart status \
+        add-subscriber \
         logs-core logs-amf logs-smf logs-upf logs-gnb logs-ue
 
-# ── Build ──────────────────────────────────────────────────────────────────────
+# ── Build (from source) ────────────────────────────────────────────────────────
 
-build:
-	docker build -t open5gs:local -f Dockerfile.open5gs .
+build: build-core build-ran build-ue
 
-# ── Core (Open5GS 5G SA) ───────────────────────────────────────────────────────
+build-core:
+	$(COMPOSE_CORE) build
 
-core-up: build
+build-ran:
+	$(COMPOSE_RAN) build
+
+build-ue:
+	$(COMPOSE_UE) build
+
+# ── Host prerequisite: gtp5g kernel module ────────────────────────────────────
+# Must run as root on the Ubuntu host BEFORE starting UPF.
+
+gtp5g:
+	sudo bash scripts/install-gtp5g.sh
+
+# ── Core (free5GC 5G SA) ───────────────────────────────────────────────────────
+
+core-up:
 	$(COMPOSE_CORE) up -d
 
 core-down:
@@ -23,7 +42,7 @@ core-down:
 core-restart:
 	$(COMPOSE_CORE) restart
 
-# ── RAN (OAI gNB, rfsim) ──────────────────────────────────────────────────────
+# ── RAN (OAI gNB, rfsim, built from source) ───────────────────────────────────
 
 ran-up:
 	$(COMPOSE_RAN) up -d
@@ -31,7 +50,7 @@ ran-up:
 ran-down:
 	$(COMPOSE_RAN) down
 
-# ── UE (OAI NR-UE, rfsim) ─────────────────────────────────────────────────────
+# ── UE (OAI NR-UE, rfsim, built from source) ──────────────────────────────────
 
 ue-up:
 	$(COMPOSE_UE) up -d
@@ -42,8 +61,8 @@ ue-down:
 # ── Full stack ─────────────────────────────────────────────────────────────────
 
 up: core-up
-	@echo "Waiting 15s for core to be ready..."
-	@sleep 15
+	@echo "Waiting 20s for core to be ready..."
+	@sleep 20
 	$(MAKE) ran-up
 	@sleep 5
 	$(MAKE) ue-up
@@ -73,6 +92,9 @@ logs-smf:
 
 logs-upf:
 	docker logs -f upf
+
+logs-nrf:
+	docker logs -f nrf
 
 logs-gnb:
 	docker logs -f oai-gnb

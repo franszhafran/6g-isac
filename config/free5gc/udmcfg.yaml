@@ -1,0 +1,25 @@
+info:
+  version: 1.0.3
+  description: UDM initial local configuration
+
+configuration:
+  serviceNameList:
+    - nudm-sdm
+    - nudm-uecm
+    - nudm-ueau
+    - nudm-ee
+    - nudm-pp
+  sbi:
+    scheme: http
+    registerIPv4: 172.22.0.13
+    bindingIPv4: 0.0.0.0
+    port: 8000
+  nrfUri: http://172.22.0.12:8000
+  keys:
+    udmProfileAHNPrivateKey: /free5gc/config/TLS/udm.key
+    udmProfileAHNPublicKey: /free5gc/config/TLS/udm.pub
+
+logger:
+  enable: true
+  level: info
+  reportCaller: false

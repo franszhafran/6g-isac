@@ -1,0 +1,78 @@
+info:
+  version: 1.0.9
+  description: AMF initial local configuration
+
+configuration:
+  amfName: AMF
+  ngapIpList:
+    - 172.22.0.10
+  ngapPort: 38412
+  sbi:
+    scheme: http
+    registerIPv4: 172.22.0.10
+    bindingIPv4: 0.0.0.0
+    port: 8000
+  serviceNameList:
+    - namf-comm
+    - namf-evts
+    - namf-mt
+    - namf-loc
+    - namf-oam
+  servedGuamiList:
+    - plmnId:
+        mcc: "001"
+        mnc: "01"
+      amfId: cafe00
+  supportTaiList:
+    - plmnId:
+        mcc: "001"
+        mnc: "01"
+      tac: "000001"
+  plmnSupportList:
+    - plmnId:
+        mcc: "001"
+        mnc: "01"
+      snssaiList:
+        - sst: 1
+          sd: "010203"
+  supportDnnList:
+    - internet
+  nrfUri: http://172.22.0.12:8000
+  security:
+    integrityOrder:
+      - NIA2
+      - NIA0
+    cipheringOrder:
+      - NEA0
+      - NEA2
+  networkName:
+    full: free5GC
+  locality: area1
+  t3502Value: 720
+  t3512Value: 3600
+  non3gppDeregistrationTimerValue: 3240
+  t3513:
+    enable: true
+    expireTime: 6s
+    maxRetryTimes: 4
+  t3522:
+    enable: true
+    expireTime: 6s
+    maxRetryTimes: 4
+  t3550:
+    enable: true
+    expireTime: 6s
+    maxRetryTimes: 4
+  t3560:
+    enable: true
+    expireTime: 6s
+    maxRetryTimes: 4
+  t3565:
+    enable: true
+    expireTime: 6s
+    maxRetryTimes: 4
+
+logger:
+  enable: true
+  level: info
+  reportCaller: false

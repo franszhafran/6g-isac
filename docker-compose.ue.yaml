@@ -3,14 +3,38 @@ version: "3.8"
 services:
 
   oai-nr-ue:
-    image: oaisoftwarealliance/oai-nr-ue:develop
+    build:
+      context: .
+      dockerfile: build/oai-ue/Dockerfile
     container_name: oai-nr-ue
     hostname: oai-nr-ue
     privileged: true
-    environment:
-      - TZ=UTC
-      # Band n78, 30 kHz SCS, 106 RBs, center freq 3619.2 MHz (ARFCN 641280)
-      - USE_ADDITIONAL_OPTIONS=--sa --rfsim -r 106 --numerology 1 --band 78 -C 3619200000 --rfsimulator.serveraddr 172.22.0.23 --uicc0.imsi 001010000000001 --uicc0.key fec86ba6eb707ed08905757b1bb44b8f --uicc0.opc C42449363BBAD02B66D16BC975D77CC1 --uicc0.dnn internet --uicc0.nssai_sst 1
+    # Override CMD with UE credentials and rfsim server address
+    command:
+      - "--sa"
+      - "--rfsim"
+      - "-r"
+      - "106"
+      - "--numerology"
+      - "1"
+      - "--band"
+      - "78"
+      - "-C"
+      - "3619200000"
+      - "--rfsimulator.serveraddr"
+      - "172.22.0.23"
+      - "--uicc0.imsi"
+      - "001010000000001"
+      - "--uicc0.key"
+      - "fec86ba6eb707ed08905757b1bb44b8f"
+      - "--uicc0.opc"
+      - "C42449363BBAD02B66D16BC975D77CC1"
+      - "--uicc0.dnn"
+      - "internet"
+      - "--uicc0.nssai_sst"
+      - "1"
+      - "--uicc0.nssai_sd"
+      - "0x010203"
     networks:
       isac_net:
         ipv4_address: 172.22.0.24

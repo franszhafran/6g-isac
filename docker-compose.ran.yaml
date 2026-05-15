@@ -3,13 +3,12 @@ version: "3.8"
 services:
 
   oai-gnb:
-    image: oaisoftwarealliance/oai-gnb:develop
+    build:
+      context: .
+      dockerfile: build/oai-gnb/Dockerfile
     container_name: oai-gnb
     hostname: oai-gnb
     privileged: true
-    environment:
-      - TZ=UTC
-      - USE_ADDITIONAL_OPTIONS=--sa --rfsim --log_config.global_log_level info
     volumes:
       - ./config/oai-gnb/gnb.conf:/opt/oai-gnb/etc/gnb.conf:ro
     networks:

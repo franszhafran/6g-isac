@@ -20,7 +20,7 @@ echo "Adding subscriber IMSI=${IMSI} to ${WEBCONSOLE_URL}..."
 
 curl -sf -X POST "${WEBCONSOLE_URL}/api/subscriber/imsi-${IMSI}/${PLMN_ID}" \
     -H "Content-Type: application/json" \
-    -H "Authorization: Bearer ${TOKEN}" \
+    -H "Token: ${TOKEN}" \
     -d "{
       \"plmnID\": \"${PLMN_ID}\",
       \"ueId\": \"imsi-${IMSI}\",

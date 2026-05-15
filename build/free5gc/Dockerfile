@@ -8,12 +8,10 @@ ENV GOFLAGS="-mod=mod"
 ARG FREE5GC_VERSION=v3.4.3
 
 RUN apt-get update && apt-get install -y \
-    git make curl ca-certificates gnupg \
+    git make curl ca-certificates sudo \
     && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs \
-    && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
-    && echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list \
-    && apt-get update && apt-get install -y --no-install-recommends yarn \
+    && corepack enable \
     && apt-get clean
 
 WORKDIR /free5gc
@@ -23,7 +21,7 @@ RUN git clone --recurse-submodules --depth 1 --branch ${FREE5GC_VERSION} \
 # Build all core NFs (no webconsole — avoids yarn requirement)
 RUN make amf ausf chf nrf nssf pcf smf udm udr upf
 
-# Build webconsole (yarn now at /usr/bin/yarn via apt)
+# Build webconsole; Makefile uses "sudo corepack enable" then yarn
 RUN make webconsole
 
 # Stage 2: Minimal runtime

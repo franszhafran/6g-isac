@@ -42,7 +42,8 @@ curl -sf -X POST "${WEBCONSOLE_URL}/api/subscriber/imsi-${IMSI}/${PLMN_ID}" \
           \"defaultSingleNssais\": [{\"sst\": 1, \"sd\": \"010203\"}],
           \"singleNssais\": []
         },
-        \"subscribedUeAmbr\": {\"downlink\": \"1 Gbps\", \"uplink\": \"1 Gbps\"}
+        \"subscribedUeAmbr\": {\"downlink\": \"1 Gbps\", \"uplink\": \"1 Gbps\"},
+        \"gpsis\": []
       },
       \"SessionManagementSubscriptionData\": [{
         \"singleNssai\": {\"sst\": 1, \"sd\": \"010203\"},

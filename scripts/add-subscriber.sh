@@ -10,10 +10,17 @@ KEY="${2:-fec86ba6eb707ed08905757b1bb44b8f}"
 OPC="${3:-C42449363BBAD02B66D16BC975D77CC1}"
 PLMN_ID="00101"   # MCC=001 MNC=01
 
+echo "Logging in to webconsole..."
+TOKEN=$(curl -sf -X POST "${WEBCONSOLE_URL}/api/login" \
+    -H "Content-Type: application/json" \
+    -d '{"username":"admin","password":"free5gc"}' | \
+    python3 -c "import sys,json; print(json.load(sys.stdin)['access_token'])")
+
 echo "Adding subscriber IMSI=${IMSI} to ${WEBCONSOLE_URL}..."
 
 curl -sf -X POST "${WEBCONSOLE_URL}/api/subscriber/imsi-${IMSI}/${PLMN_ID}" \
     -H "Content-Type: application/json" \
+    -H "Authorization: Bearer ${TOKEN}" \
     -d "{
       \"plmnID\": \"${PLMN_ID}\",
       \"ueId\": \"imsi-${IMSI}\",

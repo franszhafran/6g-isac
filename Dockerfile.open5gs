@@ -6,7 +6,10 @@ RUN apt-get update && \
     apt-get install -y software-properties-common curl iproute2 iptables && \
     add-apt-repository -y ppa:open5gs/latest && \
     apt-get update && \
-    apt-get install -y open5gs nodejs npm && \
+    apt-get install -y \
+        open5gs-nrf open5gs-scp open5gs-amf open5gs-smf open5gs-upf \
+        open5gs-ausf open5gs-udm open5gs-udr open5gs-pcf open5gs-bsf open5gs-nssf \
+        open5gs-webui nodejs npm && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 

@@ -11,15 +11,17 @@ RUN apt-get update && apt-get install -y \
     git make curl ca-certificates \
     && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs \
-    && npm install -g yarn \
     && apt-get clean
 
 WORKDIR /free5gc
 RUN git clone --recurse-submodules --depth 1 --branch ${FREE5GC_VERSION} \
     https://github.com/free5gc/free5gc.git .
 
-# Build all NFs (amf ausf chf nrf nssf pcf smf udm udr upf) + webconsole
-RUN make all
+# Build all core NFs (no webconsole — avoids yarn requirement)
+RUN make amf ausf chf nrf nssf pcf smf udm udr upf
+
+# Install yarn then build webconsole (React frontend + Go backend)
+RUN npm install -g yarn@1.22.21 && make webconsole
 
 # Stage 2: Minimal runtime
 FROM ubuntu:22.04

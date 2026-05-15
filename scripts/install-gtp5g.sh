@@ -5,7 +5,7 @@
 
 set -e
 
-GTP5G_VERSION=${GTP5G_VERSION:-v0.9.3}
+GTP5G_VERSION=${GTP5G_VERSION:-v0.8.9}
 
 echo "[gtp5g] Installing kernel headers..."
 apt-get update -qq

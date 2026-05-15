@@ -1,15 +1,28 @@
 info:
-  version: 1.0.1
-  description: WebConsole initial local configuration
+  version: 1.0.3
+  description: WebUI initial local configuration
 
 configuration:
-  mongoDBName: free5gc
-  mongoDBUrl: mongodb://172.22.0.2:27017
-  sbi:
-    scheme: http
-    bindingIPv4: 0.0.0.0
-    port: 5000
+  mongodb:
+    name: free5gc
+    url: mongodb://172.22.0.2:27017
   nrfUri: http://172.22.0.12:8000
+  webServer:
+    scheme: http
+    ipv4Address: 0.0.0.0
+    port: 5000
+  billingServer:
+    enable: false
+    hostIPv4: 127.0.0.1
+    listenPort: 2121
+    portRange:
+      start: 2123
+      end: 2130
+    basePath: /tmp/webconsole
+    port: 2122
+    cert:
+      pem: cert/chf.pem
+      key: cert/chf.key
 
 logger:
   enable: true

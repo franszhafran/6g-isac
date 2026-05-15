@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+
+  oai-gnb:
+    image: oaisoftwarealliance/oai-gnb:develop
+    container_name: oai-gnb
+    hostname: oai-gnb
+    privileged: true
+    environment:
+      - TZ=UTC
+      - USE_ADDITIONAL_OPTIONS=--sa --rfsim --log_config.global_log_level info
+    volumes:
+      - ./config/oai-gnb/gnb.conf:/opt/oai-gnb/etc/gnb.conf:ro
+    networks:
+      isac_net:
+        ipv4_address: 172.22.0.23
+    restart: unless-stopped
+
+networks:
+  isac_net:
+    external: true

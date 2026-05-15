@@ -1,0 +1,18 @@
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && \
+    apt-get install -y software-properties-common curl iproute2 iptables && \
+    add-apt-repository -y ppa:open5gs/latest && \
+    apt-get update && \
+    apt-get install -y open5gs nodejs npm && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /var/log/open5gs
+
+COPY scripts/entrypoint-open5gs.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
